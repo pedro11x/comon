@@ -25,8 +25,11 @@ contain-arm: ${NAME}-arm
 	${IMAGE_BUILDER} -t ${NAME}:${VER} --build-arg NAME=${NAME}-arm .
 	#--platform linux/armhf .
 
-container: contain
-	docker run --name ${NAME} -p 9099:9099 --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock --rm ${NAME}:${VER}
+container: ${NAME}
+	docker run --name ${NAME} -p 9099:9099 \
+	--mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+	--mount type=bind,source=$(CURDIR)/comon,target=/comon/comon \
+	--rm ${NAME}:${VER}
 
 #----------------Maintenance Commands-----------------
 name:
